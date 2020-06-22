@@ -1,0 +1,156 @@
+<!--
+Author: W3layouts
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+<!DOCTYPE html>
+<html>
+<head>
+<title>雾霾定位探测系统</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="Weather Report Widget template Responsive, Login form web template,Flat Pricing tables,Flat Drop downs  Sign up Web Templates, Flat Web Templates, Login sign up Responsive web template, SmartPhone Compatible web template, free web designs for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!-- Custom Theme files -->
+<link href="../static/css/style.css" rel="stylesheet" type="text/css" media="all" />
+<link href="../static/css/owl.carousel.css" rel="stylesheet" type="text/css" media="all">
+<!-- //Custom Theme files -->
+<!-- js -->
+<script src = "../static/js/jquery-2.2.3.min.js"></script> 
+<script src = "../static/js/owl.carousel.js"></script>
+<script>
+	$(document).ready(function() { 
+		$("#owl-demo").owlCarousel({ 
+		  autoPlay: 3000, //Set AutoPlay to 3 seconds
+	 
+		  items : 3,
+		  itemsDesktop : [768,3],
+		  itemsDesktopSmall : [414,4]
+	 
+		});
+	 
+	}); 
+</script> 
+<!-- sky icons -->
+<script src="../static/js/skycons.js"></script>
+<!-- //sky icons -->
+<!-- //js -->
+<!-- web font -->
+<link href='//fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'><!--web font-->
+<!-- //web font -->
+</head>
+<body>
+	<!-- main -->
+	<div class="main-agileits">
+        <h1><b>雾霾定位探测系统</b></h1>
+		<div class="main-wthree-row"> 
+			<div class="agileinfo-text"> 
+				<div class="date">
+					<!-- Date-JavaScript -->
+					<script type="text/javascript">
+						var mydate=new Date()
+						var year=mydate.getYear()
+						if(year<1000)
+						year+=1900
+						var day=mydate.getDay()
+						var month=mydate.getMonth()
+						var daym=mydate.getDate()
+						if(daym<10)
+						daym="0"+daym
+						var dayarray=new Array("Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday")
+						var montharray=new Array("January","February","March","April","May","June","July","August","September","October","November","December")
+						document.write(""+dayarray[day]+" <br> "+daym+"  "+montharray[month]+"  "+year+"")
+					</script>
+					<!-- //Date-JavaScript -->
+				</div>
+				<h2 class="temp">&nbsp;</h2>
+				<h4 class="location"></h4>
+				<h6 class="weather"></h6>
+			</div>
+			<div class="w3layouts-slider">
+				<div id="owl-demo" class="owl-carousel owl-theme">
+					<div class="item agile-item">
+						<h6>空气质量</h6>
+                        <br>
+						<h6 class="quality"></h6>
+					</div> 
+					<div class="item agile-item">
+						<h6>质量指数</h6>
+                        <br>
+						<h6 class="aq"></h6>
+					</div> 
+					<div class="item agile-item">
+                        <h6>PM2.5</h6>
+                        <br>
+						<h6 class="pm25"></h6>
+					</div>  
+					<div class="item agile-item">
+                        <h6>二氧化硫</h6>
+                        <br>
+						<h6 class="so2"></h6>
+					</div> 
+					<div class="item agile-item">
+                        <h6>二氧化氮</h6>
+                        <br>
+						<h6 class="no2"></h6>
+					</div> 
+					<div class="item agile-item">
+                        <h6>一氧化碳</h6>
+                        <br>
+						<h6 class="co"></h6>
+					</div>  
+					<div class="item agile-item">
+                        <h6>臭氧</h6>
+                        <br>
+						<h6 class="o3"></h6>
+					</div> 
+				</div>
+				<script>
+					 var icons = new Skycons({"color": "#fff"}),
+						  list  = [
+							"clear-night","clear-day", "partly-cloudy-day",
+							"partly-cloudy-night", "cloudy", "rain", "sleet", "snow", "wind",
+							"fog"
+						  ],
+						  i;
+
+					  for(i = list.length; i--; )
+						icons.set(list[i], list[i]);
+
+					  icons.play();
+				</script>
+			</div>
+            <div class="get_weather_info">
+                <script>
+                    $.get("https://ip.seeip.org/geoip", function(basic){
+                        $.get("https://free-api.heweather.net/s6/weather/now?location=" + basic['ip'] + "&key=b27e0f8b9678447c91a8edbcded8b055", function(param2){
+                            $(".location").text(param2['HeWeather6'][0]['basic']['location']);
+                            $(".temp").text(param2['HeWeather6'][0]['now']['fl'] + '°');
+                            $(".weather").text(param2['HeWeather6'][0]['now']['cond_txt']);
+                },"json")
+                    },"json");
+
+                    $.get("https://ip.seeip.org/geoip", function(air){
+                        $.get("https://free-api.heweather.net/s6/air/now?location=" + air['ip'] + "&key=b27e0f8b9678447c91a8edbcded8b055", function(param2){
+                            $(".quality").text(param2['HeWeather6'][0]['air_now_city']['qlty']);
+                            $(".aq").text(param2['HeWeather6'][0]['air_now_city']['aqi']);
+                            $(".pm25").text(param2['HeWeather6'][0]['air_now_city']['pm25']);
+                            $(".so2").text(param2['HeWeather6'][0]['air_now_city']['so2']);
+                            $(".no2").text(param2['HeWeather6'][0]['air_now_city']['no2']);
+                            $(".co").text(param2['HeWeather6'][0]['air_now_city']['co']);
+                            $(".o3").text(param2['HeWeather6'][0]['air_now_city']['o3']);
+
+                },"json")
+                    },"json");
+                </script>
+            </div>
+		</div>	
+	</div>	
+	<!-- //main -->
+	<!-- copyrights -->  
+	<div class="copy-rights wthree">		 	
+		<p>© 2020 Weather Report Widget. @rt</p>
+	</div>
+</body>
+</html>

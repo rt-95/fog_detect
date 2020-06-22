@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script src='../static/jQuery.js'> </script>
+<script>
+
+    var param = "";
+
+    $.get("https://ip.seeip.org/geoip", function(param1){
+        $.get("https://free-api.heweather.net/s6/weather/now?location=" + param1['ip'] + "&key=b27e0f8b9678447c91a8edbcded8b055", function(param2){
+            {#var jsonStr = JSON.stringify(param2);#}
+            {#alert(jsonStr)#}
+            alert(param2['HeWeather6'][0]['basic']['location']);
+    },"json")
+    },"json");
+
+
+</script>
+</body>
+</html>
