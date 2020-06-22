@@ -31,14 +31,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 		});
 	 
 	}); 
-</script> 
-<!-- sky icons -->
+</script>
+<script src = "../static/js/echart.js"></script>
 <script src="../static/js/skycons.js"></script>
-<!-- //sky icons -->
-<!-- //js -->
-<!-- web font -->
 <link href='//fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'><!--web font-->
-<!-- //web font -->
 </head>
 <body>
 	<!-- main -->
@@ -121,6 +117,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 					  icons.play();
 				</script>
 			</div>
+	<!-- //main -->
+	<!-- copyrights -->
+	</div>
+                    <div id="weather" class="col-lg-7 col-md-12" style="height:400px"></div>
             <div class="get_weather_info">
                 <script>
                     $.get("https://ip.seeip.org/geoip", function(basic){
@@ -144,11 +144,97 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 },"json")
                     },"json");
                 </script>
-            </div>
-		</div>	
-	</div>	
-	<!-- //main -->
-	<!-- copyrights -->  
+                <script>
+                    // 初始化天气折线图
+      var weather = echarts.init($('#weather').get(0));
+      option = {
+          title: {
+              text: '未来一周气温',
+              subtext: ''
+          },
+          tooltip: {
+              trigger: 'axis'
+          },
+          legend: {
+              data: ['最高气温', '最低气温', '湿度']
+          },
+          xAxis: {
+              type: 'category',
+              boundaryGap: false,
+              data: []
+          },
+          yAxis: {
+              scale:true, //纵坐标起始点根据最低值变化
+              type: 'value',
+              axisLabel: {
+                  formatter: '{value} °C'
+              }
+          },
+          series: [{
+                  name: '最高气温',
+                  type: 'line',
+                  data: [],
+                  markPoint: {
+                      data: [{
+                              type: 'max',
+                              name: '最大值'
+                          }
+
+                      ]
+                  },
+                  markLine: {
+                      data: [{
+                          type: 'average',
+                          name: '平均值'
+                      }]
+                  }
+              },
+              {
+                  name: '最低气温',
+                  type: 'line',
+                  data: [],
+                  markPoint: {
+                      data: [{
+                          type: 'min',
+                          name: '最小值'
+                      }]
+                  },
+                  markLine: {
+                      data: [{
+                              type: 'average',
+                              name: '平均值'
+                          },
+
+                      ]
+                  }
+              }
+          ]
+      };
+      weather.setOption(option);
+      // 获取天气信息
+      $.get("https://tianqiapi.com/api?version=v1&appid=31457898&appsecret=LlKqP8a8&ip=111.112.168.54",
+          function (res) {
+          //显示当前城市
+             {#option.title.subtext ='当前城市：' +res.city#}
+             //给横坐标复赋值
+              option.xAxis.data = [res.data[0].day, res.data[1].day, res.data[2].day, res.data[3].day, res.data[4]
+                  .day, res.data[5].day, res.data[6].day
+              ]
+              //由于温度返回的是xx℃ 而我们只需要数字 所以用parseInt截取数字
+              option.series[0].data = [parseInt(res.data[0].tem1), parseInt(res.data[1].tem1), parseInt(res.data[2]
+                  .tem1), parseInt(res.data[3].tem1), parseInt(res.data[4].tem1), parseInt(res.data[5]
+                  .tem1), parseInt(res.data[6].tem1)]
+              option.series[1].data = [parseInt(res.data[0].tem2), parseInt(res.data[1].tem2),
+                  parseInt(res.data[2]
+                      .tem2), parseInt(res.data[3].tem2), parseInt(res.data[4].tem2), parseInt(res.data[5]
+                      .tem2), parseInt(res.data[6].tem2)
+              ]
+
+              weather.setOption(option); // 使用刚指定的配置项和数据显示图表。
+          },
+      );
+                </script>
+            </div></div>
 	<div class="copy-rights wthree">		 	
 		<p>© 2020 Weather Report Widget. @rt</p>
 	</div>
