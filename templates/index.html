@@ -123,23 +123,24 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     <div id="weather" class="col-lg-7 col-md-12" style="height:400px"></div>
             <div class="get_weather_info">
                 <script>
-                    $.get("https://ip.seeip.org/geoip", function(basic){
-                        $.get("https://free-api.heweather.net/s6/weather/now?location=" + basic['ip'] + "&key=b27e0f8b9678447c91a8edbcded8b055", function(param2){
-                            $(".location").text(param2['HeWeather6'][0]['basic']['location']);
-                            $(".temp").text(param2['HeWeather6'][0]['now']['fl'] + '°');
-                            $(".weather").text(param2['HeWeather6'][0]['now']['cond_txt']);
+                    $.get("http://ip-api.com/json/", function(basic){
+                        // 旧版本 https://free-api.heweather.net/s6/weather/now?location=" + basic['ip'] + "&key=b27e0f8b9678447c91a8edbcded8b055
+                        $.get("https://devapi.qweather.com/v7/weather/now?location=" + basic['lon'] + "," + basic['lat'] + "&key=b27e0f8b9678447c91a8edbcded8b055", function(param2){
+                            $(".location").text(basic['city']);
+                            $(".temp").text(param2['now']['temp'] + '°');
+                            $(".weather").text(param2['now']['text']);
                 },"json")
                     },"json");
 
-                    $.get("https://ip.seeip.org/geoip", function(air){
-                        $.get("https://free-api.heweather.net/s6/air/now?location=" + air['ip'] + "&key=b27e0f8b9678447c91a8edbcded8b055", function(param2){
-                            $(".quality").text(param2['HeWeather6'][0]['air_now_city']['qlty']);
-                            $(".aq").text(param2['HeWeather6'][0]['air_now_city']['aqi']);
-                            $(".pm25").text(param2['HeWeather6'][0]['air_now_city']['pm25']);
-                            $(".so2").text(param2['HeWeather6'][0]['air_now_city']['so2']);
-                            $(".no2").text(param2['HeWeather6'][0]['air_now_city']['no2']);
-                            $(".co").text(param2['HeWeather6'][0]['air_now_city']['co']);
-                            $(".o3").text(param2['HeWeather6'][0]['air_now_city']['o3']);
+                    $.get("http://ip-api.com/json/", function(air){
+                        $.get("https://devapi.qweather.com/v7/air/now?location=" + air['lon'] + "," + air['lat'] + "&key=b27e0f8b9678447c91a8edbcded8b055", function(param2){
+                            $(".quality").text(param2['now']['category']);
+                            $(".aq").text(param2['now']['aqi']);
+                            $(".pm25").text(param2['now']['pm2p5']);
+                            $(".so2").text(param2['now']['so2']);
+                            $(".no2").text(param2['now']['no2']);
+                            $(".co").text(param2['now']['co']);
+                            $(".o3").text(param2['now']['o3']);
 
                 },"json")
                     },"json");
@@ -212,22 +213,35 @@ License URL: http://creativecommons.org/licenses/by/3.0/
       };
       weather.setOption(option);
       // 获取天气信息
-      $.get("https://tianqiapi.com/api?version=v1&appid=31457898&appsecret=LlKqP8a8&ip=111.112.168.54",
+      $.get("https://www.tianqiapi.com/free/week?appid=31457898&appsecret=LlKqP8a8",
           function (res) {
           //显示当前城市
              {#option.title.subtext ='当前城市：' +res.city#}
              //给横坐标复赋值
-              option.xAxis.data = [res.data[0].day, res.data[1].day, res.data[2].day, res.data[3].day, res.data[4]
-                  .day, res.data[5].day, res.data[6].day
+              option.xAxis.data = [res.data[0].date,
+                  res.data[1].date,
+                  res.data[2].date,
+                  res.data[3].date,
+                  res.data[4].date,
+                  res.data[5].date,
+                  res.data[6].date
               ]
               //由于温度返回的是xx℃ 而我们只需要数字 所以用parseInt截取数字
-              option.series[0].data = [parseInt(res.data[0].tem1), parseInt(res.data[1].tem1), parseInt(res.data[2]
-                  .tem1), parseInt(res.data[3].tem1), parseInt(res.data[4].tem1), parseInt(res.data[5]
-                  .tem1), parseInt(res.data[6].tem1)]
-              option.series[1].data = [parseInt(res.data[0].tem2), parseInt(res.data[1].tem2),
-                  parseInt(res.data[2]
-                      .tem2), parseInt(res.data[3].tem2), parseInt(res.data[4].tem2), parseInt(res.data[5]
-                      .tem2), parseInt(res.data[6].tem2)
+              option.series[0].data = [parseInt(res.data[0].tem_day),
+                  parseInt(res.data[1].tem_day),
+                  parseInt(res.data[2].tem_day),
+                  parseInt(res.data[3].tem_day),
+                  parseInt(res.data[4].tem_day),
+                  parseInt(res.data[5].tem_day),
+                  parseInt(res.data[6].tem_day)]
+
+              option.series[1].data = [parseInt(res.data[0].tem_night),
+                  parseInt(res.data[1].tem_night),
+                  parseInt(res.data[2].tem_night),
+                  parseInt(res.data[3].tem_night),
+                  parseInt(res.data[4].tem_night),
+                  parseInt(res.data[5].tem_night),
+                  parseInt(res.data[6].tem_night)
               ]
 
               weather.setOption(option); // 使用刚指定的配置项和数据显示图表。
